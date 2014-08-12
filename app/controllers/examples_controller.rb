@@ -66,36 +66,44 @@ class ExamplesController < UITableViewController
 
   def tableView(table_view, cellForRowAtIndexPath: index_path)
 
-    cell = table_view.dequeueReusableCellWithIdentifier(EXAMPLES_CELL_ID) || begin
-      rmq.create(ExamplesCell, :examples_cell, reuse_identifier: EXAMPLES_CELL_ID).get
-    end
+    cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: EXAMPLES_CELL_ID)
+    cell.backgroundColor = UIColor.colorWithWhite(0.9, alpha: 1.0)
 
     if index_path.section == 0
       if index_path.row == 0
-        cell.textLabel.text = "Block User Interaction"
+        cell.textLabel.text = "block user interaction"
         s = UISwitch.new
         s.on = @block_user_interaction
         s.addTarget(self, action: 'switched:', forControlEvents: UIControlEventValueChanged)
         cell.accessoryView = s
       else
-        cell.textLabel.text = "Show a Keyboard"
+        cell.textLabel.text = "show a keyboard"
+        t = UITextField.new
+        t.returnKeyType = UIReturnKeyDone
+        t.addTarget(self, action: 'dismiss_keyboard:', forControlEvents: UIControlEventEditingDidEndOnExit)
+        t.borderStyle = UITextBorderStyleRoundedRect
+        t.sizeToFit
+        f = t.frame
+        f.size.width = 55.0
+        t.frame = f
+        cell.accessoryView = t
       end
     else
       cell.textLabel.text = case index_path.row
       when 0
-        "Fade, Activity Indicator"
+        "fade, activity indicator"
       when 1
-        "Fade, Act. Ind. & Text, Transform"
+        "fade, act. ind. & text, transform"
       when 2
-        "Fade, Pie Progress, Dim Background"
+        "fade, pie progress, dim background"
       when 3
-        "Zoom, Ring PRogress, Dim Background"
+        "zoom, ring progress, dim background"
       when 4
-        "Fade, Text Only, Bottom Position"
+        "fade, text only, bottom position"
       when 5
-        "Fade, Success, Square Shape"
+        "fade, success, square shape"
       when 6
-        "Fade, Error, Square Shape"
+        "fade, error, square shape"
       end
     end
 
@@ -132,6 +140,10 @@ class ExamplesController < UITableViewController
     JGProgressHUD.allProgressHUDsInViewHierarchy(self.navigationController.view).each do |visible|
       visible.userInteractionEnabled = @block_user_interaction
     end
+  end
+
+  def dismiss_keyboard t
+    t.resignFirstResponder
   end
 
   def success style
