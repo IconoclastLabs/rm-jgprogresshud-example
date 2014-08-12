@@ -70,21 +70,33 @@ class ExamplesController < UITableViewController
       rmq.create(ExamplesCell, :examples_cell, reuse_identifier: EXAMPLES_CELL_ID).get
     end
 
-    cell.textLabel.text = case index_path.row
-    when 0
-      "Fade, Activity Indicator"
-    when 1
-      "Fade, Act. Ind. & Text, Transform"
-    when 2
-      "Fade, Pie Progress, Dim Background"
-    when 3
-      "Zoom, Ring PRogress, Dim Background"
-    when 4
-      "Fade, Text Only, Bottom Position"
-    when 5
-      "Fade, Success, Square Shape"
-    when 6
-      "Fade, Error, Square Shape"
+    if index_path.section == 0
+      if index_path.row == 0
+        cell.textLabel.text = "Block User Interaction"
+        s = UISwitch.new
+        s.on = @block_user_interaction
+        s.addTarget(self, action: 'switched:', forControlEvents: UIControlEventValueChanged)
+        cell.accessoryView = s
+      else
+        cell.textLabel.text = "Show a Keyboard"
+      end
+    else
+      cell.textLabel.text = case index_path.row
+      when 0
+        "Fade, Activity Indicator"
+      when 1
+        "Fade, Act. Ind. & Text, Transform"
+      when 2
+        "Fade, Pie Progress, Dim Background"
+      when 3
+        "Zoom, Ring PRogress, Dim Background"
+      when 4
+        "Fade, Text Only, Bottom Position"
+      when 5
+        "Fade, Success, Square Shape"
+      when 6
+        "Fade, Error, Square Shape"
+      end
     end
 
     cell
@@ -111,6 +123,14 @@ class ExamplesController < UITableViewController
       success(hud_style)
     when 6
       error(hud_style)
+    end
+  end
+
+  def switched sender
+    @block_user_interaction = sender.isOn
+
+    JGProgressHUD.allProgressHUDsInViewHierarchy(self.navigationController.view).each do |visible|
+      visible.userInteractionEnabled = @block_user_interaction
     end
   end
 
