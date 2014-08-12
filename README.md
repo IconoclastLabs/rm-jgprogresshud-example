@@ -1,4 +1,4 @@
-JGProgressHUD Pod in RubyMotion
+[JGProgressHUD Pod](https://github.com/JonasGessner/JGProgressHUD) in RubyMotion
 ===================
 JGProgressHUD boasts it is better than SVProgressHUD and others for the following reasons:
 * Super simple to implement
