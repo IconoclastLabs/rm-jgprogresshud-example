@@ -7,6 +7,7 @@ class ExamplesController < UITableViewController
     super
 
     @block_user_interaction = true
+    self.title = "JGProgressHUD RubyMotion"
 
     rmq.stylesheet = ExamplesControllerStylesheet
 
@@ -72,21 +73,23 @@ class ExamplesController < UITableViewController
     if index_path.section == 0
       if index_path.row == 0
         cell.textLabel.text = "block user interaction"
-        s = UISwitch.new
-        s.on = @block_user_interaction
-        s.addTarget(self, action: 'switched:', forControlEvents: UIControlEventValueChanged)
-        cell.accessoryView = s
+        @block = cell # stops cell from being collected
+        @s = UISwitch.new
+        @s.on = @block_user_interaction
+        @s.addTarget(self, action: 'switched:', forControlEvents: UIControlEventValueChanged)
+        cell.accessoryView = @s
       else
         cell.textLabel.text = "show a keyboard"
-        t = UITextField.new
-        t.returnKeyType = UIReturnKeyDone
-        t.addTarget(self, action: 'dismiss_keyboard:', forControlEvents: UIControlEventEditingDidEndOnExit)
-        t.borderStyle = UITextBorderStyleRoundedRect
-        t.sizeToFit
-        f = t.frame
+        @keyboard = cell # stops cell from being collected
+        @t = UITextField.new
+        @t.returnKeyType = UIReturnKeyDone
+        @t.addTarget(self, action: 'dismiss_keyboard:', forControlEvents: UIControlEventEditingDidEndOnExit)
+        @t.borderStyle = UITextBorderStyleRoundedRect
+        @t.sizeToFit
+        f = @t.frame
         f.size.width = 55.0
-        t.frame = f
-        cell.accessoryView = t
+        @t.frame = f
+        cell.accessoryView = @t
       end
     else
       cell.textLabel.text = case index_path.row
