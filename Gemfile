@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rake'
-gem 'ruby_motion_query'
+gem 'ruby_motion_query', github: "infinitered/rmq"
 
 # Useful tools that most people use
 #gem 'bubble-wrap'
